@@ -14,7 +14,8 @@ ko-m:=$(name).ko
 # fill in the version of the kernel for which you want the module compiled to
 KVER:=$(shell uname -r)
 # fill in the directory of the kernel build system
-KDIR:=/lib/modules/$(KVER)/build
+#KDIR:=/lib/modules/$(KVER)/build
+KDIR:=/home/descent/work/rpi2/linux
 # fill in the vervosity level you want
 V:=0
 # do you want to use checkpatch?
@@ -54,7 +55,8 @@ endif
 # pattern for compiling the c++ parts
 %.o: %.cc $(FLAGS)
 	$(info doing [$@])
-	$(Q)g++ `cat $(FLAGS)` -Wall -Werror -c -o $@ $<
+	echo `cat $(FLAGS)` -Wall -Werror -c -o $@ $<
+	$(Q)arm-linux-gnueabihf-g++ -fno-exceptions -fno-rtti `cat $(FLAGS)` -Wall -Werror -c -o $@ $<
 
 .PHONY: all
 all: $(ko-m)
@@ -63,9 +65,11 @@ $(ko-m): $(CC_OBJECTS)
 	$(info doing [$@])
 	$(Q)$(MAKE) -C $(KDIR) M=$(CURDIR) V=$(V) modules
 	$(Q)$(info relinking the module with the C++ parts)
-	$(Q)ld -r --build-id -o $(ko-m) $(KO_ING)
+	echo "ld -r --build-id -o $(ko-m) $(KO_ING)"
+	$(Q)arm-linux-gnueabihf-ld -r --build-id -o $(ko-m) $(KO_ING)
 
 $(FLAGS): scripts/process_flags.py $(ALL_DEP)
+	echo "kk $(KDIR)"
 	$(info doing [$@])
 	$(Q)scripts/process_flags.py $(KDIR) $@
 
