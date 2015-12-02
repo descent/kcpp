@@ -87,6 +87,8 @@ if doClean:
 output=subprocess.check_output(args)
 # split into lines and find the line that ends with 'main.c'
 lines=output.split('\n')
+print "xx lines:" 
+print lines
 line=find_ends_with(lines,'main.c')
 line=line.strip()
 l=line.split()
@@ -107,9 +109,10 @@ l=remove_two_in_a_row(l, '-include')
 l=remove_two_in_a_row(l, '-o')
 # if the kernel was compiled with debug and profiling then we don't
 # need it
-l.remove('-pg')
+#l.remove('-pg')
 l.remove('-c')
-l.remove('gcc')
+#l.remove('gcc-4.9')
+l.remove('arm-linux-gnueabihf-gcc')
 #l.remove('-g')
 '''
 remove flags which are not valid for C++...
