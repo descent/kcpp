@@ -1,0 +1,1 @@
+if no -fno-exceptions -fno-rtti option, *.ko will add __cxa_end_cleanup symbol.
