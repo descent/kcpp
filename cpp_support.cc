@@ -26,6 +26,13 @@ void operator delete(void *pointer) {
 }
 
 
+
+void g_dtor()
+{
+  for (int i=obj_count-1 ; i >= 0 ; --i)
+    dobjs_vec[i].dtor_(dobjs_vec[i].arg_);
+}
+
 extern "C"
 {
   int __cxa_atexit(void (*destructor) (void *), void *arg, void *__dso_handle)
@@ -38,6 +45,7 @@ extern "C"
 
     if (obj_count >= DOBJS_SIZE)
     {
+      service_puts("global object is to many!\n");
       return -1;
     }
     dobjs_vec[obj_count] = dobj;
