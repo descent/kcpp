@@ -59,4 +59,10 @@ extern "C"
   {
     return __cxa_atexit (func, arg, d);
   }
+
+  void __cxa_pure_virtual();
+  void __cxa_pure_virtual()
+  {
+      // Do nothing or print an error message.
+  }
 }
