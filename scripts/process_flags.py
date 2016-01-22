@@ -109,7 +109,7 @@ l=remove_two_in_a_row(l, '-o')
 # need it
 l.remove('-pg')
 l.remove('-c')
-l.remove('gcc-4.9')
+l.remove('gcc')
 #l.remove('-g')
 '''
 remove flags which are not valid for C++...

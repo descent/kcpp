@@ -8,13 +8,14 @@ name:=kcpp
 obj-m:=$(name).o
 $(name)-objs:=top.o ser_mem.o ser_print.o ser_empty.o dummy.o
 # fill in any extra compiler flags
-EXTRA_CFLAGS+=-Werror -I.
+EXTRA_CFLAGS+=-Werror -I. -m32
 # fill in the name of the genrated ko file
 ko-m:=$(name).ko
 # fill in the version of the kernel for which you want the module compiled to
 KVER:=$(shell uname -r)
 # fill in the directory of the kernel build system
-KDIR:=/lib/modules/$(KVER)/build
+#KDIR:=/lib/modules/$(KVER)/build
+KDIR:=/home/descent/work/atom/linux-4.1.13
 # fill in the vervosity level you want
 V:=0
 # do you want to use checkpatch?
@@ -63,7 +64,7 @@ $(ko-m): $(CC_OBJECTS)
 	$(info doing [$@])
 	$(Q)$(MAKE) -C $(KDIR) M=$(CURDIR) V=$(V) modules
 	$(Q)$(info relinking the module with the C++ parts)
-	$(Q)ld -r --build-id -o $(ko-m) $(KO_ING)
+	$(Q)ld -melf_i386 -r --build-id -o $(ko-m) $(KO_ING)
 
 $(FLAGS): scripts/process_flags.py $(ALL_DEP)
 	$(info doing [$@])
