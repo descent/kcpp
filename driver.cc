@@ -19,14 +19,23 @@ class Obj
   public:
     Obj()
     {
-      service_puts("obj ctor\n");
+      //service_puts("obj ctor\n");
+      id_ = self_id_;
+      service_printk("%d ## obj ctor\n", id_);
+      ++self_id_;
     }
     ~Obj()
     {
-      service_puts("obj dtor\n");
+      //service_puts("obj dtor\n");
+      --self_id_;
+      service_printk("obj dtor: %d\n", id_);
     }
   private:
+    static int self_id_;
+    int id_;
 };
+
+int Obj::self_id_=0;
 
 
 
@@ -71,12 +80,14 @@ class DeriveClass : public BaseClass
 
 static Driver* driver;
 Driver g_driver;
-Obj obj;
+Obj obj[10];
 
-extern "C" {
-	int cpp_init(void);
-	void cpp_exit(void);
-        void _GLOBAL__sub_I_g_driver();
+extern "C" 
+{
+  int cpp_init(void);
+  void cpp_exit(void);
+  void _GLOBAL__sub_I_g_driver();
+  void _GLOBAL__sub_I__ZN3Obj8self_id_E();
 }
 
 int cpp_init() 
@@ -96,7 +107,8 @@ int cpp_init()
   service_puts("derive vfunc\n");
   bp->vfunc();
 
-  _GLOBAL__sub_I_g_driver();
+  //_GLOBAL__sub_I_g_driver();
+  _GLOBAL__sub_I__ZN3Obj8self_id_E();
   driver = new Driver();
 
   return(0);
