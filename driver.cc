@@ -1,7 +1,9 @@
 #include "services.h"
 #include "cpp_support.h"
 
-#define TEST_VF
+//#define TEST_VF
+
+typedef unsigned int u32;
 
 class Driver {
 public:
@@ -88,6 +90,14 @@ extern "C"
   void cpp_exit(void);
   void _GLOBAL__sub_I_g_driver();
   void _GLOBAL__sub_I__ZN3Obj8self_id_E();
+  int __cxa_guard_acquire(u32 *myself);
+  void __cxa_guard_release(u32 *myself);
+}
+
+void f1();
+void f1()
+{
+  static Obj sobj;
 }
 
 int cpp_init() 
@@ -111,10 +121,26 @@ int cpp_init()
   _GLOBAL__sub_I__ZN3Obj8self_id_E();
   driver = new Driver();
 
+  service_puts("use static obj\n");
+  f1();
+  service_puts("use static obj again\n");
+  f1();
+
   return(0);
 }
 
 void cpp_exit() {
 	delete driver;
   g_dtor();
+}
+
+
+int __cxa_guard_acquire(u32 *myself)
+{
+  return !(*((char*)myself));
+}
+
+void __cxa_guard_release(u32 *myself)
+{
+  *((char*)myself) = 1;
 }
