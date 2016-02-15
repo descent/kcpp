@@ -110,6 +110,7 @@ l=remove_two_in_a_row(l, '-o')
 l.remove('-pg')
 l.remove('-c')
 l.remove('gcc')
+l.remove('-msoft-float')
 #l.remove('-g')
 '''
 remove flags which are not valid for C++...
