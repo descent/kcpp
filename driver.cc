@@ -1,6 +1,7 @@
 #include "services.h"
 #include "cpp_support.h"
 
+
 class Driver {
 public:
 	int x;
@@ -28,7 +29,7 @@ class Obj
 
 
 static Driver* driver;
-Driver g_driver;
+// Driver g_driver;
 Obj obj;
 
 extern "C" {
@@ -37,14 +38,28 @@ extern "C" {
         void _GLOBAL__sub_I_g_driver();
 }
 
-int cpp_init() {
-  _GLOBAL__sub_I_g_driver();
-  driver = new Driver();
+double f(double d);
+double f(double d)
+{
+  return d*=0.1;
+}
 
+int cpp_init() {
+  volatile double i=0.3;
+
+  i *= 0.5;
+
+
+  i = f(i);
+  service_printk("float: %f\n", i);
+  //_GLOBAL__sub_I_g_driver();
+  //driver = new Driver();
+
+  driver = 0;
   return(0);
 }
 
 void cpp_exit() {
-	delete driver;
-  g_dtor();
+  //delete driver;
+  //g_dtor();
 }
