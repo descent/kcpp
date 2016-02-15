@@ -1,9 +1,11 @@
 #ifndef __services_h
 #define __services_h
 
+
 /**
 This file provides headers for all functions and globals provided by the top half. Sometimes the functions declared by this file are actually implemented in the top half and sometimes this is just to declare a kernel function that we wish to use. We cannot include the kernel headers files in C++ code since they confuse the hell out of the C++ compiler and so we resort to declaring these functions here.
 */
+
 
 typedef int (*func_int_pvoid)(void*);
 typedef void (*func_void_pvoid)(void*);
@@ -13,6 +15,9 @@ typedef void (*func_void_pvoid_pvoid_pvoid_pvoid)(void*,void*,void*,void*);
 #ifdef __cplusplus
 extern "C" {
 #endif // __cplusplus
+
+void service_kernel_fpu_begin(void);
+void service_kernel_fpu_end(void);
 
 // empty class
 void service_empty(void);

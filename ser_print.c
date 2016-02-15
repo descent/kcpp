@@ -12,6 +12,7 @@
 #include <linux/mm.h>
 #include <linux/timex.h>
 #include <linux/cpufreq.h>
+#include <asm/i387.h>
 
 #include "services.h"
 #include "kernel_helper.h"
@@ -22,6 +23,16 @@
 const char *service_modname(void)
 {
 	return myname;
+}
+
+void service_kernel_fpu_begin(void)
+{
+  kernel_fpu_begin();
+}
+
+void service_kernel_fpu_end(void)
+{
+  kernel_fpu_end();
 }
 
 /*
